@@ -159,9 +159,3 @@ Server replied: Server OK: Hello, im grpc client
 | Response  | `EchoReply`  | `message: string` — server response |
 
 **Example:** request `"Hello"` → response `"Server OK: Hello"`.
-
----
-
-## 📄 License
-
-Provided as-is for educational purposes.
