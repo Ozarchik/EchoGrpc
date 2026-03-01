@@ -9,10 +9,20 @@ add_executable(server
 	src/echo.pb.cc
 	src/echo.grpc.pb.cc
 )
-
 target_link_libraries(server
 	gRPC::grpc++
 	protobuf::libprotobuf
 )
+
+add_executable(client
+	src/client.cpp
+	src/echo.pb.cc
+	src/echo.grpc.pb.cc
+)
+target_link_libraries(client
+	gRPC::grpc++
+	protobuf::libprotobuf
+)
+
 
 

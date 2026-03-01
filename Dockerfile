@@ -17,17 +17,19 @@ COPY . .
 
 RUN cmake -S . -B build && cmake --build build
 
-FROM ubuntu:24.04
-
-RUN apt update && apt install -y \
-	libprotobuf-dev \
-	libgrpc++-dev
+# ------ Server runtime ------ 
+FROM builder AS server
 
 WORKDIR /app
-
 COPY --from=builder /app/build/server .
 
 EXPOSE 50051
-
 CMD ["./server"]
 
+# ------ Client runtime ------ 
+FROM builder AS client
+
+WORKDIR /app
+COPY --from=builder /app/build/client .
+
+CMD ["./client"]
