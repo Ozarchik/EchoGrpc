@@ -4,7 +4,7 @@
 
 **A minimal gRPC service in C++**
 
-[![CI](https://github.com/ozar/EchoGrpc/actions/workflows/ci.yml/badge.svg)](https://github.com/ozar/EchoGrpc/actions/workflows/ci.yml)
+[![CI](https://github.com/Ozarchik/EchoGrpc/actions/workflows/ci.yml/badge.svg)](https://github.com/Ozarchik/EchoGrpc/actions/workflows/ci.yml)
 [![C++](https://img.shields.io/badge/C++-17-blue.svg)](https://en.cppreference.com/w/cpp/17)
 [![gRPC](https://img.shields.io/badge/gRPC-1.x-green.svg)](https://grpc.io/)
 [![CMake](https://img.shields.io/badge/CMake-3.16+-purple.svg)](https://cmake.org/)
@@ -93,18 +93,6 @@ cmake --build build
 Executables will be in `build/`:
 - `build/server` — gRPC server
 - `build/client` — gRPC client
-
----
-
-## 🔄 CI/CD
-
-GitHub Actions workflow runs on every push and pull request to `main`/`master`:
-
-- **Build** — installs dependencies, generates proto code, builds with CMake
-- **Smoke test** — starts the server and runs the client to verify the echo flow
-- **Docker** — builds server and client images to ensure they compile
-
-Workflow file: [`.github/workflows/ci.yml`](.github/workflows/ci.yml)
 
 ---
 
