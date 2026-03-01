@@ -1,0 +1,66 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y build-essential cmake pkg-config \
+            protobuf-compiler libprotobuf-dev libgrpc++-dev protobuf-compiler-grpc
+
+      - name: Generate proto code
+        run: chmod +x proto_compile.sh && ./proto_compile.sh
+
+      - name: Build
+        run: chmod +x build.sh && ./build.sh
+
+      - name: Smoke test (server + client)
+        run: |
+          ./build/server &
+          sleep 2
+          ./build/client
+        timeout-minutes: 1
+
+  docker:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate proto code
+        run: |
+          sudo apt update
+          sudo apt install -y protobuf-compiler protobuf-compiler-grpc
+          chmod +x proto_compile.sh && ./proto_compile.sh
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build server image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          target: server
+          push: false
+          tags: echo-grpc-server:test
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build client image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          target: client
+          push: false
+          tags: echo-grpc-client:test
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
